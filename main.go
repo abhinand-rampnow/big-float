@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math/big"
+
+	"github.com/shopspring/decimal"
 )
 
 // SetPrec(200) - Here 200 is the number of precision in bits = 60 decimal points
@@ -70,4 +72,20 @@ func main() {
 	resultDiv.Quo(x, y)
 	fmt.Println("Division:", resultDiv)
 	// ################################## //
+
+	// DECIMAL EXAMPLE
+
+	// EXAMPLE 1
+	btcAmount1Str := "0.123456789123456789" // Example BTC amount with high precision
+  btcAmount2Str := "0.987654321987654321" // Another example BTC amount
+
+  btcAmount1, _ := decimal.NewFromString(btcAmount1Str)
+  btcAmount2, _ := decimal.NewFromString(btcAmount2Str)
+
+  resultAddDecimal := btcAmount1.Add(btcAmount2)
+  resultSubDecimal := btcAmount2.Sub(btcAmount1)
+  resultMulDecimal := btcAmount1.Mul(btcAmount2)
+  resultDivDecimal := btcAmount1.Div(btcAmount2)
+
+	fmt.Println("results: ", resultAddDecimal, resultSubDecimal, resultMulDecimal, resultDivDecimal)
 }
