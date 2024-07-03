@@ -65,7 +65,7 @@ func main() {
 	resultMul.Mul(x, y)
 	fmt.Println("Multiplication:", resultMul)
 
-	// Division
+	// Division x/y
 	resultDiv := new(big.Float).SetPrec(200)
 	resultDiv.Quo(x, y)
 	fmt.Println("Division:", resultDiv)
