@@ -4,88 +4,125 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/cockroachdb/apd"
 	"github.com/shopspring/decimal"
 )
 
-// SetPrec(200) - Here 200 is the number of precision in bits = 60 decimal points
 
-func main() {
-	// EXAMPLE 1
-	usdtAmountStr := "4"
-	usdtToBtcRateStr := "0.00034"
-
-	usdtAmount := new(big.Float).SetPrec(200)
-	usdtAmount.SetString(usdtAmountStr)
-
-	usdtToBtcRate := new(big.Float).SetPrec(200)
-	usdtToBtcRate.SetString(usdtToBtcRateStr)
-
-	// BTC value = USDT amount * USDT to BTC rate
-	btcValue := new(big.Float).SetPrec(200)
-	btcValue.Mul(usdtAmount, usdtToBtcRate)
-
-	fmt.Printf("%.18f USDT is equivalent to %.18f BTC\n", usdtAmount, btcValue)
-	// ################################## //
-
-
-	// EXAMPLE 2
-	originalValueStr := "1000.123456789"
-	percentageStr := "12.5"
-
-	originalValue := new(big.Float).SetPrec(200)
-	originalValue.SetString(originalValueStr)
-
-	percentage := new(big.Float).SetPrec(200)
-	percentage.SetString(percentageStr)
-
-	// percentage value = (original value * percentage) / 100
-	percentageValue := new(big.Float).SetPrec(200)
-	percentageValue.Mul(originalValue, percentage)
-	percentageValue.Quo(percentageValue, big.NewFloat(100))
-	// ################################## //
-
-
-	// EXAMPLE 3 - MATHEMATICAL OPERATIONS
+func MathBigBasicAddition(a, b string) {
 	x := new(big.Float).SetPrec(200)
-	x.SetString("123456789.123456789123456789")
+	x.SetString(a)
 
 	y := new(big.Float).SetPrec(200)
-	y.SetString("987654321.987654321987654321")
+	y.SetString(b)
 
-	// Addition
 	resultAdd := new(big.Float).SetPrec(200)
 	resultAdd.Add(x, y)
 	fmt.Println("Addition:", resultAdd)
+}
+
+func MathBigBasicSubtraction(a, b string) {
+	x := new(big.Float).SetPrec(200)
+	x.SetString(a)
+
+	y := new(big.Float).SetPrec(200)
+	y.SetString(b)
 
 	// Subtraction
 	resultSub := new(big.Float).SetPrec(200)
 	resultSub.Sub(x, y)
 	fmt.Println("Subtraction:", resultSub)
+}
+
+func MathBigBasicMultiplication(a, b string) {
+	// EXAMPLE 3 - MATHEMATICAL OPERATIONS
+	x := new(big.Float).SetPrec(200)
+	x.SetString(a)
+
+	y := new(big.Float).SetPrec(200)
+	y.SetString(b)
 
 	// Multiplication
 	resultMul := new(big.Float).SetPrec(200)
 	resultMul.Mul(x, y)
 	fmt.Println("Multiplication:", resultMul)
+}
+
+func MathBigDivision(a, b string) {
+	x := new(big.Float).SetPrec(200)
+	x.SetString(a)
+
+	y := new(big.Float).SetPrec(200)
+	y.SetString(b)
 
 	// Division x/y
 	resultDiv := new(big.Float).SetPrec(200)
 	resultDiv.Quo(x, y)
 	fmt.Println("Division:", resultDiv)
-	// ################################## //
+}
 
-	// DECIMAL EXAMPLE
+func DecimalAdd(a, b string) {
+	btcAmount1, _ := decimal.NewFromString(a)
+  btcAmount2, _ := decimal.NewFromString(b)
 
-	// EXAMPLE 1
-	btcAmount1Str := "0.123456789123456789" // Example BTC amount with high precision
-  btcAmount2Str := "0.987654321987654321" // Another example BTC amount
+	resultAddDecimal := btcAmount1.Add(btcAmount2)
 
-  btcAmount1, _ := decimal.NewFromString(btcAmount1Str)
-  btcAmount2, _ := decimal.NewFromString(btcAmount2Str)
+	fmt.Println("result ", resultAddDecimal)
+}
 
-  resultAddDecimal := btcAmount1.Add(btcAmount2)
-  resultSubDecimal := btcAmount2.Sub(btcAmount1)
-  resultMulDecimal := btcAmount1.Mul(btcAmount2)
-  resultDivDecimal := btcAmount1.Div(btcAmount2)
+func DecimalSub(a, b string) {
+	btcAmount1, _ := decimal.NewFromString(a)
+  btcAmount2, _ := decimal.NewFromString(b)
 
-	fmt.Println("results: ", resultAddDecimal, resultSubDecimal, resultMulDecimal, resultDivDecimal)
+	resultAddDecimal := btcAmount1.Sub(btcAmount2)
+
+	fmt.Println("result ", resultAddDecimal)
+}
+
+func DecimalMul(a, b string) {
+	btcAmount1, _ := decimal.NewFromString(a)
+  btcAmount2, _ := decimal.NewFromString(b)
+
+	resultAddDecimal := btcAmount1.Mul(btcAmount2)
+
+	fmt.Println("result ", resultAddDecimal)
+}
+
+func DecimalDiv(a, b string) {
+	btcAmount1, _ := decimal.NewFromString(a)
+  btcAmount2, _ := decimal.NewFromString(b)
+
+	resultAddDecimal := btcAmount1.Div(btcAmount2)
+
+	fmt.Println("result ", resultAddDecimal)
+}
+
+func CockroachAdd(a, b string) {
+	btcAmount1 := new(apd.Decimal)
+	_, _, _ = btcAmount1.SetString(a)
+
+	btcAmount2 := new(apd.Decimal)
+    _, _, _ = btcAmount2.SetString(b)
+
+	resultAdd := new(apd.Decimal)
+  _, _ = apd.BaseContext.Add(resultAdd, btcAmount1, btcAmount2)
+
+	fmt.Println("final result", resultAdd)
+}
+
+func CockroachMul(a, b string) {
+	btcAmount1 := new(apd.Decimal)
+	_, _, _ = btcAmount1.SetString(a)
+
+	btcAmount2 := new(apd.Decimal)
+    _, _, _ = btcAmount2.SetString(b)
+
+	resultMul := new(apd.Decimal)
+   _, _ = apd.BaseContext.Mul(resultMul, btcAmount1, btcAmount2)
+
+	fmt.Println("final value ", resultMul)
+}
+
+func main() {
+	fmt.Println("hello")
 }
